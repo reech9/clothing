@@ -3,6 +3,9 @@ const router= new express.Router();
 
 const Customer = require("../models/customerModel");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const auth = require("../auth/auth");
+
 
 router.post("/customer/register", (req,res)=>{
     // to make email feild unique
@@ -67,8 +70,15 @@ router.post("/customer/login",(req,res)=>{
                 return;
             }
 
-            res.json({message: "logged in"})
+            // res.json({message: "logged in"})
+            // .sign--generates token (for verification) 
+            // -id card with logged in user id ----everest:secretkey
+            jwt.sign({customer_id: result._id}, "everest", (e,token)=>{
+                res.json({token: token})
 
+
+            })
+               
         })
     })
     .catch(e=>{
@@ -76,6 +86,11 @@ router.post("/customer/login",(req,res)=>{
     })
 
     const password = req.body.password;
+})
+
+// customerGuard---mediator---
+router.put("/customer/update", auth.customerGuard, (req,res)=>{
+    
 })
 
 
