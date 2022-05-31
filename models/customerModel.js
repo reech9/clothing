@@ -23,6 +23,11 @@ const Customer= new mongoose.Schema({
     },
     picture: {
         type: String
+    },
+
+    userId:{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Customer"
     }
 
 
