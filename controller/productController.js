@@ -2,11 +2,11 @@ const Product = require("../models/productModel");
 
 // get product
 const getProduct = (req, res) => {
-  Product.find({}, function (err, result) {
+  Product.find({}, function (err, data) {
     if (err) {
       res.send(err);
     } else {
-      res.send(result);
+      res.json(data);
     }
   });
 
