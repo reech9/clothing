@@ -7,12 +7,7 @@ const Customer = new mongoose.Schema({
   lastName: {
     type: String,
   },
-  age: {
-    type: Number,
-  },
-  dob: {
-    type: Date,
-  },
+
   password: {
     type: String,
     required: true,
