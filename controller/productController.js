@@ -1,5 +1,17 @@
 const Product = require("../models/productModel");
 
+const getCapitalizedString = (str) => {
+  if (str.includes(" ")) {
+    return str
+      .split(" ")
+      .map((s) => {
+        return s[0].toUpperCase() + s.substring(1);
+      })
+      .join(" ");
+  }
+  return str.split("")[0].toUpperCase() + str.substring(1);
+};
+
 // get product
 const getProduct = (req, res) => {
   Product.find({}, function (err, data) {
@@ -11,6 +23,18 @@ const getProduct = (req, res) => {
   });
 
   // res.send("this should get result");
+};
+
+const getProductCategory = (req, res) => {
+  const categoryName = req.params.category;
+
+  Product.find({ rentCategory: getCapitalizedString(categoryName) })
+    .then((data) => {
+      res.json({ data });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
 // inserting product
@@ -149,4 +173,10 @@ const deleteProduct = (req, res) => {
     });
 };
 
-module.exports = { addProduct, updateProduct, getProduct, deleteProduct };
+module.exports = {
+  addProduct,
+  updateProduct,
+  getProduct,
+  deleteProduct,
+  getProductCategory,
+};
