@@ -25,6 +25,14 @@ const getProduct = (req, res) => {
   // res.send("this should get result");
 };
 
+const getProductById = async (req, res) => {
+  const id = req.params.id;
+
+  const data = await Product.findById(id);
+
+  if (data) res.json({ data });
+};
+
 const getProductCategory = (req, res) => {
   const categoryName = req.params.category;
 
@@ -179,4 +187,5 @@ module.exports = {
   getProduct,
   deleteProduct,
   getProductCategory,
+  getProductById,
 };
