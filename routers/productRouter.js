@@ -9,10 +9,12 @@ const {
   getProduct,
   deleteProduct,
   getProductCategory,
+  getProductById,
 } = require("../controller/productController");
 
 router.get("/get/product", getProduct);
 router.get("/get/product/category=:category", getProductCategory);
+router.get("/get/product/:id", getProductById);
 
 router.post("/product/add", customerGuard, upload.single("img"), addProduct);
 router.put("/product/update", customerGuard, updateProduct);
