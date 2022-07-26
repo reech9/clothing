@@ -8,13 +8,14 @@ const {
   updateProduct,
   getProduct,
   deleteProduct,
+  getProductCategory,
 } = require("../controller/productController");
+
+router.get("/get/product", getProduct);
+router.get("/get/product/category=:category", getProductCategory);
 
 router.post("/product/add", customerGuard, upload.single("img"), addProduct);
 router.put("/product/update", customerGuard, updateProduct);
-// router.get("/getproducts ", getProduct);
-
-router.get("/products", getProduct);
 
 router.delete("/product/remove/:id", customerGuard, deleteProduct);
 
