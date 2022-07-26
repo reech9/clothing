@@ -17,8 +17,6 @@ router.post("/customer/register", (req, res) => {
     }
     const fn = req.body.firstName;
     const ln = req.body.lastName;
-    const age = req.body.age;
-    const dob = req.body.dob;
 
     // encryts password--- store the password in hashed_pw
     const password = req.body.password;
@@ -28,8 +26,6 @@ router.post("/customer/register", (req, res) => {
         lastName: ln,
         email: email,
         password: hashed_pw,
-        age: age,
-        dob: dob,
       });
       data
         .save()
@@ -57,7 +53,7 @@ router.post("/customer/login", (req, res) => {
       // but if the email is valid then--
       const password = req.body.password;
       bcryptjs.compare(password, result.password, (e, success) => {
-        if (success == false) {
+        if (success === false) {
           res.json({ message: "Invalid credentials*******" });
           return;
         }
@@ -66,7 +62,11 @@ router.post("/customer/login", (req, res) => {
         // .sign--generates token (for verification)
         // -id card with logged in user id ----everest:secretkey
         jwt.sign({ customer_id: result._id }, "everest", (e, token) => {
-          res.json({ token: token });
+          res.json({
+            token: token,
+            userId: result._id,
+            userName: `${result.firstName} ${result.lastName}`,
+          });
         });
       });
     })
