@@ -14,6 +14,18 @@ const getCart = (req, res) => {
   });
 };
 
+const getCartById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const data = await Cart.findById(id);
+
+    if (data) res.json({ data });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // add to cart
 const addCart = async (req, res) => {
   const productId = req.body.productId;
@@ -56,7 +68,7 @@ const updateCart = (req, res) => {
         return;
       }
 
-      req.body.totalPrice = req.body.quantity * data.unitPrice;
+      req.body.totalPrice = +req.body.quantity * +data.unitPrice;
 
       Cart.findByIdAndUpdate(
         // first cartid needs to be sent then at the same time the cart should be updated
@@ -99,4 +111,4 @@ const deleteCart = (req, res) => {
     });
 };
 
-module.exports = { addCart, getCart, updateCart, deleteCart };
+module.exports = { addCart, getCart, updateCart, deleteCart, getCartById };
