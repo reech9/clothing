@@ -6,6 +6,8 @@ const Cart = new mongoose.Schema({
   quantity: { type: Number, required: true },
   unitPrice: { type: Number, required: true },
   totalPrice: { type: Number, required: true },
+  deliveryDate: { type: Date, required: true },
+  productData: { type: Object, required: true },
 });
 
 module.exports = mongoose.model("Cart", Cart);
