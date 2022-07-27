@@ -1,24 +1,39 @@
 const Review = require("../models/reviewModel");
+const Customer = require("../models/customerModel");
 
 // create review
 const addReview = (req, res) => {
   const productId = req.body.productId;
   const reviewText = req.body.reviewText;
-  const reviewDate = req.body.reviewDate;
 
-  const data = new Review({
-    userId: req.customerData._id,
-    productId,
-    reviewText,
-    reviewDate,
-  });
+  let customerFullName = "";
 
-  data
-    .save()
+  Customer.findById(req.customerData._id)
     .then((data) => {
-      res.json({ data });
+      customerFullName = `${data.firstName} ${data.lastName}`;
+
+      const reviewData = new Review({
+        userId: req.customerData._id,
+        productId,
+        reviewText,
+        authorName: customerFullName,
+        reviewDate: new Date().toISOString(),
+      });
+
+      reviewData
+        .save()
+        .then((data) => {
+          res.json({ data });
+        })
+        .catch((err) =>
+          res.json({ message: `${err.message}`, stack: err.stack })
+        );
     })
-    .catch((err) => res.json({ message: `${err.message}` }));
+    .catch((err) => {
+      console.log(err);
+    });
+
+  console.log(`this is: ${customerFullName}`);
 };
 
 //update review
@@ -62,4 +77,11 @@ const deleteReview = (req, res) => {
   });
 };
 
-module.exports = { addReview, updateReview };
+const getReviewByProductId = async (req, res) => {
+  const { id } = req.params;
+
+  const review = await Review.find({ productId: id });
+  res.json({ review });
+};
+
+module.exports = { addReview, updateReview, getReviewByProductId };
