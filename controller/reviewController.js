@@ -32,15 +32,11 @@ const addReview = (req, res) => {
     .catch((err) => {
       console.log(err);
     });
-
-  console.log(`this is: ${customerFullName}`);
 };
 
 //update review
 const updateReview = (req, res) => {
   const id = req.params.id;
-
-  console.log(id);
 
   Review.findOne({ userId: req.customerData._id._id })
     .then((data) => {
@@ -51,7 +47,6 @@ const updateReview = (req, res) => {
 
       Review.findByIdAndUpdate(id, req.body)
         .then((data) => {
-          console.log(data);
           res.json({ data });
         })
         .catch((err) => {
@@ -73,7 +68,11 @@ const deleteReview = (req, res) => {
       return;
     }
 
-    Review.findByIdAndDelete(id);
+    Review.findByIdAndDelete(id)
+      .then((res) => {
+        res.send(res);
+      })
+      .catch((err) => res.send(err));
   });
 };
 
@@ -84,4 +83,9 @@ const getReviewByProductId = async (req, res) => {
   res.json({ review });
 };
 
-module.exports = { addReview, updateReview, getReviewByProductId };
+module.exports = {
+  addReview,
+  updateReview,
+  getReviewByProductId,
+  deleteReview,
+};
