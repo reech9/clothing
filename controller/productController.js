@@ -25,6 +25,16 @@ const getProduct = (req, res) => {
   // res.send("this should get result");
 };
 
+const getProductUser = (req, res) => {
+  Product.find({ userId: req.customerData._id })
+    .then((data) => {
+      res.json({ data });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
 const getProductById = async (req, res) => {
   const id = req.params.id;
 
@@ -127,6 +137,8 @@ const addProduct = (req, res) => {
 
 // update products
 const updateProduct = (req, res) => {
+  const id = req.params.id;
+
   const brandName = req.body.brandName;
   const productName = req.body.productName;
   const productDescription = req.body.productDescription;
@@ -137,7 +149,7 @@ const updateProduct = (req, res) => {
   const rentCategory = req.body.rentCategory;
 
   Product.updateOne(
-    { _id: req.customerData._id },
+    { _id: id },
     {
       brandName,
       productName,
@@ -188,4 +200,5 @@ module.exports = {
   deleteProduct,
   getProductCategory,
   getProductById,
+  getProductUser,
 };
