@@ -4,7 +4,7 @@ const router = new express.Router();
 const Customer = require("../models/customerModel");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const auth = require("../auth/auth");
+const { customerGuard } = require("../auth/auth");
 const upload = require("../fileupload/fileupload");
 
 router.post("/customer/register", (req, res) => {
@@ -33,7 +33,7 @@ router.post("/customer/register", (req, res) => {
           res.json({ message: "User Registered" });
         })
         .catch((err) => {
-          res.json(e);
+          res.json(err);
         });
     });
   });
@@ -78,12 +78,12 @@ router.post("/customer/login", (req, res) => {
 });
 
 // allow customer to view their dashboard
-router.get("/customer/dashboard", auth.customerGuard, (req, res) => {
+router.get("/customer/dashboard", customerGuard, (req, res) => {
   res.json({ data: req.customerData });
 });
 
 // allowing user to update their profile
-router.put("/customer/update", auth.customerGuard, (req, res) => {
+router.put("/customer/update", customerGuard, (req, res) => {
   const fn = req.body.fn;
   const ln = req.body.ln;
 
@@ -100,7 +100,7 @@ router.put("/customer/update", auth.customerGuard, (req, res) => {
 
 router.put(
   "/customer/picture/update",
-  auth.customerGuard,
+  customerGuard,
   upload.single("pic"),
   (req, res) => {
     if (req.file == undefined) {
