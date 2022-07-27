@@ -13,6 +13,11 @@ const Review = new mongoose.Schema({
     ref: "Product",
   },
 
+  authorName: {
+    type: String,
+    required: true,
+  },
+
   reviewText: {
     type: String,
     required: true,
