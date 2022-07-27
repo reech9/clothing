@@ -1,5 +1,6 @@
 const { response } = require("express");
 const Cart = require("../models/cartModel");
+const Product = require("../models/productModel");
 
 // get cart
 const getCart = (req, res) => {
@@ -14,17 +15,22 @@ const getCart = (req, res) => {
 };
 
 // add to cart
-const addCart = (req, res) => {
+const addCart = async (req, res) => {
   const productId = req.body.productId;
   const quantity = req.body.quantity;
-  const unitPrice = req.body.unitPrice;
-  const totalPrice = +quantity * +unitPrice;
+  const deliveryDate = req.body.deliveryDate;
+
+  const productData = await Product.findById(productId);
+
+  const totalPrice = +quantity * productData.rentPrice;
 
   const data = new Cart({
     productId,
     quantity,
-    unitPrice,
+    unitPrice: productData.rentPrice,
     totalPrice,
+    productData,
+    deliveryDate,
     userId: req.customerData._id._id,
   });
 
